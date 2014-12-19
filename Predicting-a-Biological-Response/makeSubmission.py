@@ -10,13 +10,13 @@ from sklearn.ensemble import RandomForestClassifier
 def main():
     # create the training + test sets
     try:
-        dataset = pd.read_csv('Data/train.csv')
+        data = pd.read_csv('Data/train.csv')
     except IOError:
         print("io ERROR-->Could not locate file.")
 
-    target = dataset.Activity.values
+    target = data.Activity.values
 
-    train = dataset.drop('Activity', axis = 1).values
+    train = data.drop('Activity', axis = 1).values
 
     test = pd.read_csv('Data/test.csv').values
 
@@ -32,26 +32,40 @@ def main():
     # predict_proba(X) predict class probabilities for X as list
     predicted_probs = [x[1] for x in rf.predict_proba(test)]
 
+    # prep data for use in pd.Series
+    molID, predictProbs = prepData(predicted_probs)
+
+    df = {'MoleculeID': molID, 'PredictedProbability': predictProbs}
+
+
     # pandas series = a one dimentional ndarray with axis labels on the
     # previously predicted
     # class probabilities for the test
-    predicted_probs = pd.Series(predicted_probs)
+    predicted_probs = pd.DataFrame(df)
 
-    # set index to start at 1 to use for MoleculeID when writing to file
-    predicted_probs.index += 1
-    print(type(predicted_probs))
-
-    print(predicted_probs)
-    """
     # write predicted_probs to file with pandas method .to_csv()--add header
     # for submission
     try:
-        predicted_probs.to_csv('Data/submission.csv', header = True, \
-                                index_label = ['MoleculeId', \
-                                'PredictedProbability'], cols = 2)
+        predicted_probs.to_csv('Data/submission.csv', index = False)
         print("File successfully written; check 'Data' folder")
     except IOError:
         print("io ERROR-->Could not write data to file.")
-    """
+
+# preparing data for conversion to pd.DataFrame
+def prepData(alist):
+        # prepare list to be converted to pandas Series
+        colOne = []
+        colTwo = []
+        idx = 1
+
+        # for loop to set MoleculeID to match the benchmark;
+        # place values into list for easier wrangling as pd.Series
+        for i in alist:
+            colOne.append(idx)
+            colTwo.append(i)
+            idx += 1
+
+        return colOne, colTwo
+
 # call the main function
 main()
