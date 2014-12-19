@@ -35,12 +35,12 @@ def main():
     # prep data for use in pd.Series
     molID, predictProbs = prepData(predicted_probs)
 
+    # use a dictionary with keys as col headers and values as lists pulled from
+    # previous prep function
     df = {'MoleculeID': molID, 'PredictedProbability': predictProbs}
 
 
-    # pandas series = a one dimentional ndarray with axis labels on the
-    # previously predicted
-    # class probabilities for the test
+    # pandas DataFrame = a tabular datastructure like a SQL table
     predicted_probs = pd.DataFrame(df)
 
     # write predicted_probs to file with pandas method .to_csv()--add header
