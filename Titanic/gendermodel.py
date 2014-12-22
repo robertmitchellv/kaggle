@@ -1,4 +1,5 @@
-""" This simple code is desinged to teach a basic user to read in the files in python, simply find what proportion of males and females survived and make a predictive model based on this
+""" Part of tutorial:
+This simple code is desinged to teach a basic user to read in the files in python, simply find what proportion of males and females survived and make a predictive model based on this
 Author : AstroDave
 Date : 18 September 2012
 Revised: 28 March 2014
@@ -26,7 +27,7 @@ data = np.array(data) 									# Then convert from a list to an array.
 # Set some variables
 number_passengers = np.size(data[0::,1].astype(np.float))
 number_survived = np.sum(data[0::,1].astype(np.float))
-proportion_survivors = number_survived / number_passengers 
+proportion_survivors = number_survived / number_passengers
 
 # I can now find the stats of all the women on board,
 # by making an array that lists True/False whether each row is female
@@ -34,7 +35,7 @@ women_only_stats = data[0::,4] == "female" 	# This finds where all the women are
 men_only_stats = data[0::,4] != "female" 	# This finds where all the men are (note != means 'not equal')
 
 # I can now filter the whole data, to find statistics for just women, by just placing
-# women_only_stats as a "mask" on my full data -- Use it in place of the '0::' part of the array index. 
+# women_only_stats as a "mask" on my full data -- Use it in place of the '0::' part of the array index.
 # You can test it by placing it there, and requesting column index [4], and the output should all read 'female'
 # e.g. try typing this:   data[women_only_stats,4]
 women_onboard = data[women_only_stats,1].astype(np.float)
@@ -50,7 +51,7 @@ print 'Proportion of men who survived is %s' % proportion_men_survived
 # Now that I have my indicator that women were much more likely to survive,
 # I am done with the training set.
 # Now I will read in the test file and write out my simplistic prediction:
-# if female, then model that she survived (1) 
+# if female, then model that she survived (1)
 # if male, then model that he did not survive (0)
 
 # First, read in test.csv
@@ -72,4 +73,3 @@ for row in test_file_object:									# For each row in test file,
         predictions_file_object.writerow([row[0], "0"])			# write the PassengerId, and predict 0.
 test_file.close()												# Close out the files.
 predictions_file.close()
-

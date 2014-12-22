@@ -2,6 +2,10 @@
     //kaggle submission
     //Biological Response
     --> random forest classifier
+
+    Author: Robertmitchellv
+    Date: Dec 16, 2104
+    Revised: Dec 22, 2014
 """
 
 import pandas as pd

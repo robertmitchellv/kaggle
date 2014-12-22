@@ -1,4 +1,5 @@
-""" Now that the user can read in a file this creates a model which uses the price, class and gender
+""" Part of tutorial:
+Now that the user can read in a file this creates a model which uses the price, class and gender
 Author : AstroDave
 Date : 18th September 2012
 Revised : 28 March 2014
@@ -74,7 +75,7 @@ test_file = open('test.csv', 'rb')
 test_file_object = csv.reader(test_file)
 header = test_file_object.next()
 
-# Also open the a new file so I can write to it. 
+# Also open the a new file so I can write to it.
 predictions_file = open("genderclassmodel.csv", "wb")
 predictions_file_object = csv.writer(predictions_file)
 predictions_file_object.writerow(["PassengerId", "Survived"])
