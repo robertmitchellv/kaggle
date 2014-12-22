@@ -5,31 +5,36 @@
 """
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn import cross_validation
-import logloss
+from sklearn.cross_validation import KFold
 import numpy as np
+import pandas as pd
+import logloss
 
 def main():
-    #read in  data, parse into training and target sets
-    train = csv.reader(open("Data/train.csv", "rb"))
-    target = np.array( [x[0] for x in train] )
-    train = np.array( [x[1:] for x in train] )
+    #read data from csv; use nparray to create the training + target sets
+    try:
+        train = pd.read_csv('Data/train.csv')
+    except IOError:
+        print("io ERROR-->Could not locate file.")
 
-    #In this case we'll use a random forest, but this could be any classifier
-    cfr = RandomForestClassifier(n_estimators = 100)
+    target = np.array([x[0] for x in train])
+    train = np.array([x[1:] for x in train])
 
-    #Simple K-Fold cross validation. 10 folds.
-    cv = cross_validation.KFold(len(train), k = 10, indices = False)
+    # in this case we'll use a random forest, but this could be any classifier
+    model = RandomForestClassifier(n_estimators = 100, n_jobs = -1)
+
+    # simple K-Fold cross validation. 10 folds.
+    cv = KFold(n = len(train), n_folds = 10, indices = False)
 
     #iterate through the training and test cross validation segments and
-    #run the classifier on each one, aggregating the results into a list
+    #run the classifier on each one, aggregating the results into a list    
     results = []
     for traincv, testcv in cv:
-        probas = cfr.fit(train[traincv], target[traincv]).predict_proba(train[testcv])
-        results.append( logloss.llfun(target[testcv], [x[1] for x in probas]) )
+        prob = model.fit(train[traincv], target[traincv]).predict_proba(train[testcv])
+        results.append(logloss.llfun(target[testcv], [x[1] for x in prob]))
 
     #print out the mean of the cross-validated results
-    print ("Results: " + str( np.array(results).mean() )
+    print('Results: ', str(np.array(results).mean()))
 
-if __name__ == "__main__":
-    main()
+# call main function
+main()
