@@ -10,7 +10,7 @@
 
 import pandas as pd
 import numpy as np
-
+import matplotlib as plt
 
 def main():
     # comment
@@ -19,11 +19,13 @@ def main():
     except IOError:
         print("io ERROR-->Could not locate file.")
     
+    print(train.head(10))
+    
     # comment
-    try:
-        test = pd.read_csv('Data/test.csv')
-    except IOError:
-        print("io ERROR-->Could not locate file.")
+    # try:
+    #    test = pd.read_csv('Data/test.csv')
+    # except IOError:
+    #    print("io ERROR-->Could not locate file.")
 
 
 # call main function
